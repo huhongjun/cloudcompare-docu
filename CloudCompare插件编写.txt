@@ -1,0 +1,87 @@
+
+、 进入源码目录E:\OpenSource\OpenLidar\CloudCompare\trunk-2.5.0\qCC\plugins，在该文
+“qDummyPlugin”的文件夹，拷贝它到当前文件夹，并改名为“qMyPlugin”。
+CPP名字都改为“qMyPlugin”，将CMakeLists.txt
+“DUMMY”都用自己的插件名代替，最后进入…\plugins\CMakeLists.txt中，
+add_subdirectory (qMyPlygin)； 
+、 修改头文件以及CPP文件，实现插件功能；在头文件中把所有Dummy替换成My，并将
+DUMMY替换成MY； 
+CPP文件中也与dummy进行相关操作； 
+、 CMake编译，在VC2010中生成工程 
+
+
+
+插件运行 
+（）加载插件的各子项，调用addFilter()函数，addFilter()函数以PCL插件
+ 
+
+
+connect（）函数，这是QT的消息，将filter的信号newEntity()与当前对象的槽函数
+链接，触发handleNewEntity()，将打开PCD文档这一按钮添加到工具条中。 
+在被点击到时，会弹出相关对话框，调用文件读取函数，它得到的知识PCD文件的路径，并
+m_filename中； 
+
+compute（）中，通过loadSensorMessage()函数将点云加载进来，多个点云的加载时通过for
+m_fileneme中的个点云加载进来的。 
+
+函数如下： 
+
+ 
+
+PCD文件的相关功能； 
+
+实现对点云的法线进行估计 
+ 
+
+
+
+
+
+qPCL插件上添加其他功能 
+CloudCompare源文件路径：
+
+
+VoxelGrid为例： 
+
+则需使用Qt  designer进行对话框的设计，保存文件生成ui文件 
+
+Widget Box中可以拖动相关事件到对话框中，在右边的参数设置栏中可以修改其参数，比如
+ 
+
+ui文件在VC2010中打开便可看到其对话框的标题设置、变量名及初始值。 
+
+ui文件放入到如下路径中： 
+； 
+ 
+
+CloudCompare的代码。 
+qPCL.cpp中的getAction()函数中添加addFilter( newVoxelGrid())，并包含其头文件在CPP文件中
+<VoxelGrid.h> 
+VoxelGrid.h中进行相关的代码修改即可。 
+
+
+ 
+ 
+VoxelGrid，并添加相关头文件以及对话框头文件： 
+
+ 
+
+ 
+
+
+compute()函数中调用相关滤波算法的实现： 
+
+ 
+
+filtering.cpp中添加voxelgrid()函数，在此之前要在该cpp文件中添加相关头文件 
+
+然后在qPCL.cpp中声明filtering.h（否则voxelgrid()
+ 
+VoxelGridDlg.h和VoxelGridDlg.cpp文件进行修改 
+修改如下，主要是修改宏定义、添加头文件，类名可以不做修改，但类从何处继承而
+ 
+
+修改如下，也只需要改写ui的继承关系即可。 
+
+INSTALL就可以把EXE文件及相关的动态库都导入到一个文件夹中。 
+ 
